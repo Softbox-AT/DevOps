@@ -1,0 +1,30 @@
+name: Pulling code from branch
+description: 'Delete old branches with configurable parameters'
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  test-job:
+    runs-on: self-hosted
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run commands
+        run: |
+          echo "==============================="
+          echo "Работаем на self-hosted runner!"
+          cd /home/bitrix/www/
+          echo "==============================="
+          echo "Рабочая директория: $(pwd)"
+          echo "==============================="
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_rsa_key_pipeline
+          echo "Stash всех настроек"
+          git stash
+          git status
+          git pull
+          cd local && bitrix build

@@ -1,0 +1,23 @@
+name: Clean Up Old Branches
+description: 'Delete old branches with configurable parameters'
+
+inputs:
+  repo_token:
+    description: 'GitHub token with repo permissions'
+    required: true
+  days_before_delete:
+    description: 'Number of days before deleting branches'
+    required: false
+    default: '30'
+  
+runs:
+  using: composite
+  steps: 
+    - name: Delete old branches
+      uses: beatlabs/delete-old-branches-action@v1
+      with:
+        repo_token: ${{ inputs.repo_token }}
+        days_before_delete: ${{ inputs.skip_branches }}
+        skip_branches: main,master,dev,preprod,prod,develop,production
+        delete_merged_only: true
+        dry_run: false
