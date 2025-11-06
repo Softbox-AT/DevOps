@@ -2,7 +2,7 @@ name: Pulling code from branch
 description: 'Delete old branches with configurable parameters'
 
 on:
-  workflow_dispatch:
+  workflow_call:
   push:
 
 jobs:
