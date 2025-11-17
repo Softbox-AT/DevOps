@@ -24,7 +24,7 @@ jobs:
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa_key_pipeline
           echo "Stash всех настроек"
-          git stash
+          git stash -u
           git status
           git pull
           cd local && bitrix build
