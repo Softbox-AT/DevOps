@@ -2,7 +2,6 @@ name: Pulling code from branch
 
 on:
   workflow_call:
-  #push:
     inputs:
       environment:
         required: false
