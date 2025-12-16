@@ -1,9 +1,17 @@
 name: Pulling code from branch
-description: 'Delete old branches with configurable parameters'
 
 on:
   workflow_call:
-  push:
+  #push:
+    inputs:
+      environment:
+        required: false
+        type: string
+        default: 'dev'
+      deploy_path:
+        required: false
+        type: string
+        default: '/home/bitrix/www/'
 
 jobs:
   test-job:
@@ -15,9 +23,11 @@ jobs:
 
       - name: Run commands
         run: |
+          echo "Деплой в окружение: ${{ inputs.environment }}"
+          echo "Путь: ${{ inputs.deploy_path }}"
           echo "==============================="
           echo "Работаем на self-hosted runner!"
-          cd /home/bitrix/www/
+          cd ${{ inputs.deploy_path }}
           echo "==============================="
           echo "Рабочая директория: $(pwd)"
           echo "==============================="
