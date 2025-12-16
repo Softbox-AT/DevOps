@@ -11,10 +11,14 @@ on:
         required: false
         type: string
         default: '/home/bitrix/www/'
+      runner_labels:
+        required: false
+        type: string
+        default: 'self-hosted'
 
 jobs:
   test-job:
-    runs-on: self-hosted
+    runs-on: ${{ inputs.runner_labels }}
     
     steps:
       - name: Checkout code
