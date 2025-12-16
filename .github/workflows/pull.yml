@@ -17,7 +17,7 @@ on:
         default: 'self-hosted'
 
 jobs:
-  test-job:
+  pull-and-build:
     runs-on: ${{ fromJSON(inputs.runner_labels) }}
     
     steps:
