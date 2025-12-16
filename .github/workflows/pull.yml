@@ -18,7 +18,7 @@ on:
 
 jobs:
   test-job:
-    runs-on: ${{ inputs.runner_labels }}
+    runs-on: ${{ fromJSON(inputs.runner_labels) }}
     
     steps:
       - name: Checkout code
