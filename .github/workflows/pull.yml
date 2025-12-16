@@ -14,6 +14,7 @@ on:
       runner_labels:
         required: false
         type: string
+        default: 'self-hosted'
 
 jobs:
   test-job:
