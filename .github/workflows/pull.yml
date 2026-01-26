@@ -15,6 +15,9 @@ on:
         required: false
         type: string
         default: 'self-hosted'
+      runner_user:
+        required: true
+        type: string
 
 jobs:
   pull-and-build:
@@ -31,7 +34,7 @@ jobs:
           echo "==============================="
           echo "Работаем на self-hosted runner!"
           cd ${{ inputs.deploy_path }}
-          sudo setfacl -R -m u:github:rwx .
+          sudo setfacl -R -m u:${{ inputs.runner_user }}:rwx .
           echo "==============================="
           echo "Рабочая директория: $(pwd)"
           echo "==============================="
