@@ -1,0 +1,49 @@
+name: Pulling build and migration
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: false
+        type: string
+        default: 'dev'
+      deploy_path:
+        required: false
+        type: string
+        default: '/home/bitrix/www/'
+      runner_labels:
+        required: false
+        type: string
+        default: 'self-hosted'
+      runner_user:
+        required: true
+        type: string
+
+jobs:
+  pull-and-build:
+    runs-on: ${{ fromJSON(inputs.runner_labels) }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run commands
+        run: |
+          echo "Деплой в окружение: ${{ inputs.environment }}"
+          echo "Путь: ${{ inputs.deploy_path }}"
+          echo "==============================="
+          echo "Работаем на self-hosted runner!"
+          cd ${{ inputs.deploy_path }}
+          sudo setfacl -R -m u:${{ inputs.runner_user }}:rwx .
+          echo "==============================="
+          echo "Рабочая директория: $(pwd)"
+          echo "==============================="
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_rsa_key_pipeline
+          echo "Stash всех настроек"
+          git clean -fd
+          git stash -u
+          git status
+          git pull
+          cd local && bitrix build
+          cd && sudo -u bitrix php /home/bitrix/www/bitrix/modules/sprint.migration/tools/migrate.php up
